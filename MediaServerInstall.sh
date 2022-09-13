@@ -62,6 +62,6 @@ docker run -d --name=organizr -v organizr-config:/config -e PGID=1000 -e PUID=10
 echo "Creating Nginx Proxy Manager container and its required database container"
 cp "$CURR_DIR"/docker-compose.yml "$NGINX_PROXY_MANAGER_DIR"/
 cd "$NGINX_PROXY_MANAGER_DIR"/
-docker-compose up && rm -r "$NGINX_PROXY_MANAGER_DIR"
+docker compose up -d && rm -r "$NGINX_PROXY_MANAGER_DIR"
 
 # TODO: Install VPN
