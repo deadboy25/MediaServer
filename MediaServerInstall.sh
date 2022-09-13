@@ -3,6 +3,7 @@
 # install docker
 sudo curl -fsSL https://get.docker.com |bash
 
+sleep 20
 # install portainer
 sudo docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
 
@@ -62,7 +63,19 @@ docker run -d --name=ombi -e PUID=1000 -e PGID=1000 -e TZ=America/New_York -p 35
 
 docker volume create organizr-config
 
-docker run -d --name=organizr -v organizr-config:/config -e PGID=1000 -e PUID=1000 -p 80:80 -e fpm="false" -e branch="v2-master" organizr/organizr
+docker run -d --name=organizr -v organizr-config:/config -e PGID=1000 -e PUID=1000 -p 8080:80 -e fpm="false" -e branch="v2-master" organizr/organizr
 
 #################################
 
+NGINX_PROXY_MANAGER_DIR="/opt/nginxproxymanager"
+
+mkdir -p "$NGINX_PROXY_MANAGER_DIR"
+
+docker run -d --name=nginxproxymanager -v "$NGINX_PROXY_MANAGER_DIR"/data:/data -v "$NGINX_PROXY_MANAGER_DIR"/letsencrypt:/etc/letsencrypt -p 80:80 -p 443:443 -p 81:81 -e DB_MYSQL_HOST=db -e DB_MYSQL_PORT=3306 -e DB_MYSQL_USER=npm -e DB_MYSQL_PASSWORD=npm -e DB_MYSQL_NAME=npm jc21/nginx-proxy-manager:latest 
+docker run -d --name=nginxproxymanagerdb -v "$NGINX_PROXY_MANAGER_DIR"/data/mysql:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=npm -e MYSQL_DATABASE=npm -e MYSQL_USER=npm -e MYSQL_PASSWORD=npm jc21/mariadb-aria:latest 
+
+
+#$ sudo docker run -d --cap-add=NET_ADMIN --device=/dev/net/tun --name=IPVanish --dns 84.200.69.80 --dns 84.200.70.40 -p 8888:8888 -e 'USERNAME=[username]' -e 'PASSWORD=[password]' -e 'COUNTRY=[country code]'     -e 'PNET=[local network]' \
+#    -e 'RANDOMIZE=[true/false]' \
+#    -e 'PRIO_REMOTE=[first remote to connect to]' \
+#    bluscript/ipvanish-tinyproxy
