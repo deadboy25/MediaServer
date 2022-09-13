@@ -16,7 +16,7 @@ mkdir -p "$NGINX_PROXY_MANAGER_DIR"
 
 # install docker
 echo "Installing Docker"
-sudo curl -fsSL https://get.docker.com |bash || sleep 10
+sudo curl -fsSL https://get.docker.com |bash && sleep 10
 
 # install docker compose
 echo "Installing Docker Compose"
