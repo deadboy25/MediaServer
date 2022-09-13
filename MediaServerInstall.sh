@@ -57,7 +57,7 @@ echo "Creating Ombi container"
 docker run -d --name=ombi -e PUID=1000 -e PGID=1000 -e TZ=America/New_York -p 3579:3579 -v ombi-config:/config --restart unless-stopped lscr.io/linuxserver/ombi:latest
 
 echo "Creating Organizr container"
-docker run -d --name=organizr -v organizr-config:/config -e PGID=1000 -e PUID=1000 -p 8080:80 -e fpm="false" -e branch="v2-master" organizr/organizr
+docker run -d --name=organizr -v organizr-config:/config -e PGID=1000 -e PUID=1000 -p 8080:80 -e fpm="false" -e branch="v2-master" --restart unless-stopped organizr/organizr
 
 echo "Creating Nginx Proxy Manager container and its required database container"
 cp "$CURR_DIR"/docker-compose.yml "$NGINX_PROXY_MANAGER_DIR"/
