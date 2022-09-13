@@ -60,8 +60,8 @@ echo "Creating Organizr container"
 docker run -d --name=organizr -v organizr-config:/config -e PGID=1000 -e PUID=1000 -p 8080:80 -e fpm="false" -e branch="v2-master" organizr/organizr
 
 echo "Creating Nginx Proxy Manager container and its required database container"
-mv "$CURR_DIR"/docker-compose.yml "$NGINX_PROXY_MANAGER_DIR"/
+cp "$CURR_DIR"/docker-compose.yml "$NGINX_PROXY_MANAGER_DIR"/
 cd "$NGINX_PROXY_MANAGER_DIR"/
-docker-compose up
+docker-compose up && rm -r "$NGINX_PROXY_MANAGER_DIR"
 
 # TODO: Install VPN
