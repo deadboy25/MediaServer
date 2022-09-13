@@ -5,7 +5,7 @@ apt-get update
 MEDIA_DIR="/media"
 DOWNLOADS_DIR="/downloads"
 NGINX_PROXY_MANAGER_DIR="/tmp/nginxproxymanager"
-CURR_DIR="${pwd}"
+CURR_DIR="$(pwd)"
 
 mkdir -p "$MEDIA_DIR"
 mkdir "$MEDIA_DIR"/movies
