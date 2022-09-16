@@ -1,3 +1,6 @@
+############
+# Jellyfin #
+############
 --- 
 version: "2.1" 
 
@@ -40,7 +43,7 @@ services:
       - /mnt/media/movies:/data/movies 
       - /mnt/media/music:/data/music
     ports: 
-      - 8096:8096 
+      #- 8096:8096 
       #- 8920:8920 #optional 
       #- 7359:7359/udp #optional 
       #- 1900:1900/udp #optional 
@@ -59,7 +62,7 @@ services:
       - nzbget-config:/config 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      - 6789:6789 
+      #- 6789:6789 
     restart: unless-stopped 
 
   sonarr: 
@@ -74,7 +77,7 @@ services:
       - /mnt/media/tv:/tv #optional 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      - 8989:8989 
+      #- 8989:8989 
     restart: unless-stopped 
 
   radarr: 
@@ -89,7 +92,7 @@ services:
       - /mnt/media/movies:/movies #optional 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      - 7878:7878 
+      #- 7878:7878 
     restart: unless-stopped 
 
   lidarr: 
@@ -104,7 +107,7 @@ services:
       - /mnt/media/music:/music #optional 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      - 8686:8686 
+      #- 8686:8686 
     restart: unless-stopped 
 
   ombi: 
@@ -118,7 +121,7 @@ services:
     volumes: 
       - ombi-config:/config 
     ports: 
-      - 3579:3579 
+      #- 3579:3579 
     restart: unless-stopped 
 
   organizr: 
@@ -127,7 +130,7 @@ services:
       image: organizr/organizr:latest 
       restart: unless-stopped 
       ports: 
-          - 8080:80 
+          #- 8080:80 
       volumes: 
           - organizr-config:/config 
       environment: 
