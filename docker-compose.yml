@@ -1,6 +1,12 @@
 --- 
 version: "2.1" 
 
+networks:
+  vpn-network:
+    name: vpn-network
+  jellyfin-network:
+    name: jellyfin-network
+
 volumes:
   portainer-data:
   jellyfin-config:
@@ -29,7 +35,9 @@ services:
 
   jellyfin: 
     image: lscr.io/linuxserver/jellyfin:latest 
-    container_name: jellyfin 
+    container_name: jellyfin
+    networks:
+      - jellyfin-network
     environment: 
       - PUID=1000 
       - PGID=1000 
@@ -41,7 +49,7 @@ services:
       - /mnt/media/movies:/data/movies 
       - /mnt/media/music:/data/music
     ports: 
-      #- 8096:8096 
+      - 8096:8096 
       #- 8920:8920 #optional 
       #- 7359:7359/udp #optional 
       #- 1900:1900/udp #optional 
@@ -49,7 +57,8 @@ services:
 
   nzbget: 
     image: lscr.io/linuxserver/nzbget:latest 
-    container_name: nzbget 
+    container_name: nzbget
+    network_mode: service:openvpn
     environment: 
       - PUID=1000 
       - PGID=1000 
@@ -59,7 +68,7 @@ services:
     volumes: 
       - nzbget-config:/config 
       - /mnt/downloads:/downloads #optional 
-    ports: 
+    #ports: 
       #- 6789:6789 
     restart: unless-stopped 
 
@@ -75,7 +84,7 @@ services:
       - /mnt/media/tv:/tv #optional 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      #- 8989:8989 
+      - 8989:8989 
     restart: unless-stopped 
 
   radarr: 
@@ -90,7 +99,7 @@ services:
       - /mnt/media/movies:/movies #optional 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      #- 7878:7878 
+      - 7878:7878 
     restart: unless-stopped 
 
   lidarr: 
@@ -105,7 +114,7 @@ services:
       - /mnt/media/music:/music #optional 
       - /mnt/downloads:/downloads #optional 
     ports: 
-      #- 8686:8686 
+      - 8686:8686 
     restart: unless-stopped 
 
   ombi: 
@@ -119,7 +128,7 @@ services:
     volumes: 
       - ombi-config:/config 
     ports: 
-      #- 3579:3579 
+      - 3579:3579 
     restart: unless-stopped 
 
   organizr: 
@@ -128,7 +137,7 @@ services:
       image: organizr/organizr:latest 
       restart: unless-stopped 
       ports: 
-          #- 8080:80 
+          - 8080:80 
       volumes: 
           - organizr-config:/config 
       environment: 
@@ -172,20 +181,23 @@ services:
     volumes: 
       - ./data/mysql:/var/lib/mysql 
 
-  openvpn-as:
+  openvpn:
     image: ghcr.io/linuxserver/openvpn-as
-    container_name: openvpn-as
+    container_name: openvpn
+    networks:
+      - vpn-network
     cap_add:
       - NET_ADMIN
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - INTERFACE=eth0 #optional
+      #- INTERFACE=eth0 #optional
     volumes:
       - openvpn-config:/config
     ports:
       - 943:943
       - 9443:9443
       - 1194:1194/udp
+      - 6789:6789 #NZBGet
     restart: unless-stopped
