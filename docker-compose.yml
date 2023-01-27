@@ -15,10 +15,10 @@ volumes:
   radarr-config:
   lidarr-config:
   ombi-config:
-  organizr-config:
+#  organizr-config:
 #  nginx-data:
 #  nginx-certs:
-  openvpn-config:
+#  openvpn-config:
   
 services: 
   portainer:
@@ -133,19 +133,19 @@ services:
       - 3579:3579 
     restart: unless-stopped 
 
-  organizr: 
-      container_name: organizr 
-      hostname: organizr 
-      image: organizr/organizr:latest 
-      restart: unless-stopped 
-      ports: 
-          - 8080:80 
-      volumes: 
-          - organizr-config:/config 
-      environment: 
-          - PUID=1000 
-          - PGID=1000 
-          - TZ=America/New_York 
+#  organizr: 
+#      container_name: organizr 
+#      hostname: organizr 
+#      image: organizr/organizr:latest 
+#      restart: unless-stopped 
+#      ports: 
+#          - 8080:80 
+#      volumes: 
+#          - organizr-config:/config 
+#      environment: 
+#          - PUID=1000 
+#          - PGID=1000 
+#          - TZ=America/New_York 
 
 #  nginx-proxy-manager: 
 #    image: 'jc21/nginx-proxy-manager:latest' 
