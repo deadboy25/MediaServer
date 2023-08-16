@@ -2,14 +2,13 @@
 version: "2.1" 
 
 networks:
-#  vpn-network:
-#    name: vpn-network
   jellyfin-network:
     name: jellyfin-network
 
 volumes:
   portainer-data:
   jellyfin-config:
+  jellyseerr-config:
   nzbget-config:
   sonarr-config:
   radarr-config:
@@ -57,11 +56,21 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      - LOG_LEVEL=debug
+      - TZ=America/New_York
+    ports:
+      - 5055:5055
+    volumes:
+      - jellyseerr-config:/app/config
+    restart: unless-stopped
 
   nzbget: 
     image: lscr.io/linuxserver/nzbget:latest 
     container_name: nzbget
-#    network_mode: service:openvpn
     networks:
       - jellyfin-network
     environment: 
