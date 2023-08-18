@@ -2,6 +2,8 @@
 version: "2.1" 
 
 networks:
+#  vpn-network:
+#    name: vpn-network
   jellyfin-network:
     name: jellyfin-network
 
@@ -13,6 +15,7 @@ volumes:
   sonarr-config:
   radarr-config:
   lidarr-config:
+  ombi-config:
   
 services: 
   portainer:
@@ -56,6 +59,7 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+
   jellyseerr:
     image: fallenbagel/jellyseerr:latest
     container_name: jellyseerr
@@ -71,6 +75,7 @@ services:
   nzbget: 
     image: lscr.io/linuxserver/nzbget:latest 
     container_name: nzbget
+#    network_mode: service:openvpn
     networks:
       - jellyfin-network
     environment: 
@@ -96,7 +101,7 @@ services:
     volumes: 
       - sonarr-config:/config 
       - /mnt/media/tv:/tv #optional 
-      - /mnt/downloads:/downloads #optional 
+      - /mnt/media/downloads:/downloads #optional 
     ports: 
       - 8989:8989 
     restart: unless-stopped 
@@ -111,7 +116,7 @@ services:
     volumes: 
       - radarr-config:/config 
       - /mnt/media/movies:/movies #optional 
-      - /mnt/downloads:/downloads #optional 
+      - /mnt/media/downloads:/downloads #optional 
     ports: 
       - 7878:7878 
     restart: unless-stopped 
@@ -126,7 +131,7 @@ services:
     volumes: 
       - lidarr-config:/config 
       - /mnt/media/music:/music #optional 
-      - /mnt/downloads:/downloads #optional 
+      - /mnt/media/downloads:/downloads #optional 
     ports: 
       - 8686:8686 
     restart: unless-stopped 
